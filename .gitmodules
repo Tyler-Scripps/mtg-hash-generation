@@ -1,0 +1,3 @@
+[submodule "mtg-detection"]
+	path = mtg-detection
+	url = https://github.com/Tyler-Scripps/mtg-detection.git
