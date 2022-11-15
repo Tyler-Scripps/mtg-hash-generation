@@ -9,6 +9,7 @@ import csv
 
 def write2dDict(dict2d):
     print("Writing to files")
+    print("--------------------------------------------------------------------------")
     for set in dict2d:
         fileName = set + ".csv"
         with open(os.path.join(fullDir, fileName), 'w') as f:
@@ -52,6 +53,7 @@ with open(fileName) as f:
     i = 0
     hashesGenerated = 0
     for card in data:
+        startTime = time.time()
         if card["set"] not in hashes:
             hashes[card["set"]] = {}
         if card["id"] not in hashes[card["set"]]:
@@ -78,9 +80,14 @@ with open(fileName) as f:
                 hashes[card["set"]][card["id"]] = hashedStr
                 hashesGenerated += 1
                 print(hashedStr)
-                time.sleep(0.1)
+                endTime = time.time()
+                deltaTime = endTime - startTime
+                print("hashing took", "{:.4f}".format(deltaTime), "seconds")
+                if deltaTime < 0.1:
+                    time.sleep(0.1 - deltaTime)
 
         if hashesGenerated % 350 == 0 and hashesGenerated != 0:
             write2dDict(hashes)
         print(i)
+        # print('\n')
         i += 1
