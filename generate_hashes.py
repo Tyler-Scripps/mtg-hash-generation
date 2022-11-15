@@ -80,7 +80,7 @@ with open(fileName) as f:
                 print(hashedStr)
                 time.sleep(0.1)
 
-        if hashesGenerated % 100 == 0 and hashesGenerated != 0:
+        if hashesGenerated % 500 == 0 and hashesGenerated != 0:
             write2dDict(hashes)
         print(i)
         i += 1
