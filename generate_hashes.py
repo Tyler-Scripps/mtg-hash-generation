@@ -94,3 +94,5 @@ with open(fileName) as f:
         i += 1
 
     write2dDict(hashes) #once done looping do a final write to disk
+
+print("All card hashes complete!")
