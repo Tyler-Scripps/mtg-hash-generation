@@ -26,21 +26,22 @@ hashes = {}
 #parse any existing files
 fullDir = os.path.join(os.getcwd(), outDir)
 for file in os.listdir(outDir):
-    #if hashes doesn;t have this file(set) then ass it
-    currentSet = file.split(".")[0]
-    if currentSet not in hashes:
-        hashes[currentSet] = {}
+    #if hashes doesn't have this file(set) then ass it
+    if file.split(".")[1] == "csv": #only read csv files to allow for things like readme files
+        currentSet = file.split(".")[0]
+        if currentSet not in hashes:
+            hashes[currentSet] = {}
 
-    # print(file)
-    with open(os.path.join(fullDir, file), 'r') as f:
-        csvFile = csv.reader(f, delimiter=',')
-        dataLine = False
-        for line in csvFile:
-            if dataLine:
-                # print(line)
-                hashes[currentSet][line[0]] = line[1]
-            else:
-                dataLine = True
+        # print(file)
+        with open(os.path.join(fullDir, file), 'r') as f:
+            csvFile = csv.reader(f, delimiter=',')
+            dataLine = False
+            for line in csvFile:
+                if dataLine:
+                    # print(line)
+                    hashes[currentSet][line[0]] = line[1]
+                else:
+                    dataLine = True
 
 print("loaded data")
     # print(hashes)
