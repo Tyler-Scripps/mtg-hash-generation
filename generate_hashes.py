@@ -92,3 +92,5 @@ with open(fileName) as f:
         print(i)
         # print('\n')
         i += 1
+
+    write2dDict(hashes) #once done looping do a final write to disk
