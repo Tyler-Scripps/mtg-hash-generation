@@ -64,19 +64,49 @@ with open(fileName) as f:
                     image_uri = card['image_uris']['small']
                 elif 'card_faces' in card and 'image_uris' in card['card_faces'][0]:
                     image_uri = card['card_faces'][0]['image_uris']['small']
-                # print(card["id"])
+                print(card["id"])
                 resp = requests.get(image_uri, stream=True).raw
                 image = np.asarray(bytearray(resp.read()), dtype="uint8")
-                image = cv2.imdecode(image, cv2.IMREAD_GRAYSCALE)
-                image = cv2.resize(image, [9,8])
+                # image = cv2.imdecode(image, cv2.IMREAD_GRAYSCALE)   #if not doing lab clahe equalization
+
+                image = cv2.imdecode(image, cv2.IMREAD_COLOR)   #if doing lab clahe equalization
+                image = cv2.cvtColor(image, cv2.COLOR_BGR2Lab)
+                l,a,b = cv2.split(image)
+                clahe = cv2.createCLAHE(4)
+                newL = clahe.apply(l)
+                image = cv2.merge([newL, a , b])
+                image = cv2.cvtColor(image, cv2.COLOR_LAB2BGR)
+                image = cv2.cvtColor(image, cv2.COLOR_RGBA2GRAY)
+                # if card["id"] == "5976c352-ac49-4e0d-a4c0-ec9b6b78db9c":
+                #     cv2.imshow("decoded image", image)
+                #     cv2.waitKey(0)
+                #     cv2.destroyAllWindows()
+
                 hashedStr = ""
-                for row in image:
-                    # print(row)
+
+                image = cv2.resize(image, [9,8], interpolation = cv2.INTER_AREA)  #for difference hash
+                for row in image:   #difference hash
+                    print(row)
                     for col in range(0, len(row) - 1):
+                        # print(col,row)
                         if row[col] < row[col+1]:
                             hashedStr = hashedStr + "1"
                         else:
                             hashedStr = hashedStr + "0"
+
+                # image = cv2.resize(image, [8,8], interpolation = cv2.INTER_AREA)    #for average hash
+                # average = 0
+                # for row in image:
+                #     print(row)
+                #     for col in range(0, len(row)):
+                #         average += row[col]
+                # average = average / 64
+                # for row in image:
+                #     for col in range(0, len(row)):
+                #         if row[col] > average:
+                #             hashedStr = hashedStr + "1"
+                #         else:
+                #             hashedStr = hashedStr + "0"
             
                 hashes[card["set"]][card["id"]] = hashedStr
                 hashesGenerated += 1
