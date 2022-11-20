@@ -85,7 +85,7 @@ with open(fileName) as f:
         startTime = time.time()
         print("processing 10 cards starting at:", i)
         cardsTups = []  #storage for this set of 10 cards
-        for j in range(10): #iterate over this set of 10 cards
+        for j in range(min(10, (len(data)-(10*i)))): #iterate over this set of 10 cards
             tempTup = [data[i+j]["id"], data[i+j]["set"]]     #create temporary tuple to store current card and, add id and set
             if data[i+j]["set"] not in hashes:   #ensure that there is a dict within the hashes dict for this card's set
                 hashes[data[i+j]["set"]] = {}
