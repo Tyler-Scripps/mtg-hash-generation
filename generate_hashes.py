@@ -86,7 +86,7 @@ with open(fileName) as f:
 
                 image = cv2.resize(image, [9,8], interpolation = cv2.INTER_AREA)  #for difference hash
                 for row in image:   #difference hash
-                    print(row)
+                    # print(row)
                     for col in range(0, len(row) - 1):
                         # print(col,row)
                         if row[col] < row[col+1]:
