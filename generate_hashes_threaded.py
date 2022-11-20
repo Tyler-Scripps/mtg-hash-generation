@@ -20,7 +20,7 @@ def write2dDict(dict2d):
 
 def processURI(cardTup):
     image_uri = cardTup[2]
-    resp = requests.get(image_uri, stream=True).raw
+    resp = requests.get(image_uri, stream=True, timeout=5).raw
     image = np.asarray(bytearray(resp.read()), dtype="uint8")
     # image = cv2.imdecode(image, cv2.IMREAD_GRAYSCALE)   #if not doing lab clahe equalization
 
@@ -108,9 +108,9 @@ with open(fileName) as f:
             t.start()
             threads.append(t)
         
-        print("joing threads")
+        print("joining threads")
         for thread in threads:  #wait for all threads to complete
-            thread.join()
+            thread.join()                
         
         madeRequests = False
         for tup in cardsTups:   #get completed values
