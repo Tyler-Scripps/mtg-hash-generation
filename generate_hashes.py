@@ -66,6 +66,7 @@ with open(fileName) as f:
                     image_uri = card['card_faces'][0]['image_uris']['small']
                 print(card["id"])
                 resp = requests.get(image_uri, stream=True).raw
+                respTime = time.time()
                 image = np.asarray(bytearray(resp.read()), dtype="uint8")
                 # image = cv2.imdecode(image, cv2.IMREAD_GRAYSCALE)   #if not doing lab clahe equalization
 
@@ -113,7 +114,7 @@ with open(fileName) as f:
                 print(hashedStr)
                 endTime = time.time()
                 deltaTime = endTime - startTime
-                print("hashing took", "{:.4f}".format(deltaTime), "seconds")
+                print("hashing took", "{:.4f}".format(endTime - respTime), "seconds,", "image query took", "{:.4f}".format(respTime - startTime), "seconds")
                 if deltaTime < 0.1:
                     time.sleep(0.1 - deltaTime)
 
